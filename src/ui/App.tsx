@@ -22,6 +22,7 @@ export default function App() {
   const [catchResult, setCatchResult] = useState<'success' | 'fail' | null>(null);
   const [team, setTeam] = useState<Pokemon[]>(store.getTeam());
   const [pokedex, setPokedex] = useState<Pokemon[]>(store.getPokedex());
+  const [encounters, setEncounters] = useState<Pokemon[]>(store.getEncounters());
   const [favorites, setFavorites] = useState<Record<number, boolean>>(store.getFavorites());
   const [showManageModal, setShowManageModal] = useState(false);
   const [stats, setStats] = useState(store.getStats());
@@ -40,6 +41,7 @@ export default function App() {
     setCurrent(p);
     setAttempt({ attemptsLeft: 3 });
     setStats((s: ReturnType<typeof store.getStats>) => store.setStats({ ...s, encounters: s.encounters + 1 }));
+    setEncounters(prev => store.upsertEncounter(prev, p));
     if (p.shiny) notifyShiny(p);
     if (p.cry && audioRef.current) {
       audioRef.current.src = p.cry;
@@ -187,17 +189,34 @@ export default function App() {
 
         {page==='pokedex' && (
         <section className={styles.card}>
-          <h3>Pokédex Capturés</h3>
-          <div className={styles.list}>
-            {pokedex.map(p => (
-              <div key={p.id} className={styles.item}>
-                <img alt={p.name} src={p.image} width={72} height={72} style={{ imageRendering: 'pixelated' }} />
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                  <span style={{ textTransform: 'capitalize' }}>{p.name}</span>
-                  <button className={`${styles.button} ghost`} onClick={() => toggleFavorite(p.id)}>{favorites[p.id] ? '★' : '☆'}</button>
+          <h3>Pokédex ({pokedex.length}/151)</h3>
+          <div className={styles.pokedexGrid}>
+            {Array.from({ length: 151 }, (_, i) => i + 1).map(id => {
+              const captured = pokedex.find(p => p.id === id);
+              const encountered = encounters.find(p => p.id === id);
+              const mon = captured || encountered;
+              
+              if (!mon) {
+                return (
+                  <div key={id} className={styles.card} style={{ textAlign: 'center', padding: '8px' }}>
+                    <div style={{ fontSize: '32px', opacity: 0.3 }}>?</div>
+                    <div style={{ fontSize: '10px', opacity: 0.5 }}>#{id.toString().padStart(3, '0')}</div>
+                  </div>
+                );
+              }
+              
+              return (
+                <div key={id} className={styles.card} style={{ textAlign: 'center', padding: '8px', position: 'relative' }}>
+                  <div style={{ position: 'relative', display: 'inline-block' }}>
+                    <img alt={mon.name} src={mon.image} width={64} height={64} style={{ imageRendering: 'pixelated', filter: captured ? 'none' : 'brightness(0) blur(3px) contrast(200%)' }} />
+                    {mon.shiny && captured && <img src="/assets/star.png" alt="Shiny" style={{ position: 'absolute', top: -4, right: -4, width: '16px', height: '16px' }} />}
+                  </div>
+                  <div style={{ fontSize: '10px', marginTop: '2px', opacity: 0.7 }}>#{id.toString().padStart(3, '0')}</div>
+                  <div style={{ fontSize: '11px', textTransform: 'capitalize', fontWeight: captured ? 'bold' : 'normal', opacity: captured ? 1 : 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{mon.name}</div>
+                  {captured && <button className={`${styles.button} ghost`} onClick={() => toggleFavorite(id)} style={{ marginTop: '4px', padding: '4px 8px', fontSize: '12px' }}>{favorites[id] ? '★' : '☆'}</button>}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
         )}

@@ -15,6 +15,7 @@
 .types{display:flex;gap:8px;flex-wrap:wrap}
 .flex{display:flex;gap:12px;align-items:center}
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.pokedexGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
 .item{background:var(--pokecatch-color-card);border:1px solid var(--pokecatch-color-border);border-radius:12px;padding:12px;position:relative;overflow:hidden}
 .itemInner{display:flex;flex-direction:column;gap:10px}
 .sprite{align-self:center}

@@ -3,6 +3,7 @@ import type { Pokemon } from './pokeapi';
 const KEYS = {
   team: 'pokecatch-team',
   pokedex: 'pokecatch-pokedex',
+  encounters: 'pokecatch-encounters',
   favorites: 'pokecatch-favorites',
   theme: 'pokecatch-theme',
   stats: 'pokecatch-stats'
@@ -26,7 +27,7 @@ function write<T>(key: string, value: T): T {
 export const store = {
   getTeam(): Pokemon[] { return read(KEYS.team, []); },
   setTeam(team: Pokemon[]) {
-    const next = team.slice(0, 6); // enforce max 6
+    const next = team.slice(0, 6);
     return write(KEYS.team, next);
   },
 
@@ -35,6 +36,13 @@ export const store = {
     const exists = current.find(x => x.id === p.id);
     const next = exists ? current.map(x => x.id === p.id ? p : x) : [...current, p];
     return write(KEYS.pokedex, next);
+  },
+
+  getEncounters(): Pokemon[] { return read(KEYS.encounters, []); },
+  upsertEncounter(current: Pokemon[], p: Pokemon) {
+    const exists = current.find(x => x.id === p.id);
+    const next = exists ? current : [...current, p];
+    return write(KEYS.encounters, next);
   },
 
   getFavorites(): Record<number, boolean> { return read(KEYS.favorites, {}); },
