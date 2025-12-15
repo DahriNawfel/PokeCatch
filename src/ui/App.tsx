@@ -146,7 +146,6 @@ export default function App() {
   }
 
   async function openDetail(pokemon: Pokemon) {
-    // Si les stats manquent (ancien Pokémon), re-fetch depuis l'API
     if (!pokemon.stats || !pokemon.abilities) {
       const freshData = await fetchPokemon(pokemon.id);
       setSelectedPokemon(freshData);
