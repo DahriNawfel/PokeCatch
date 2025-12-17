@@ -8,7 +8,7 @@ const __dirname = dirname(__filename);
 
 export default defineConfig({
   root: '.',
-  base: './',
+  base: '/PokeCatch/',
   publicDir: 'public',
   build: {
     outDir: 'dist'
