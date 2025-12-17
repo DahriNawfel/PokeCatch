@@ -273,7 +273,7 @@ export default function App() {
                   </div>
                   <div style={{ fontSize: '10px', marginTop: '2px', opacity: 0.7 }}>#{id.toString().padStart(3, '0')}</div>
                   <div style={{ fontSize: '11px', textTransform: 'capitalize', fontWeight: captured ? 'bold' : 'normal', opacity: captured ? 1 : 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{mon.name}</div>
-                  {captured && <button className={`${styles.button} ghost`} onClick={() => toggleFavorite(id)} style={{ marginTop: '4px', padding: '4px 8px', fontSize: '12px' }}>{favorites[id] ? '★' : '☆'}</button>}
+                  {captured && <button className={`${styles.button} ghost`} onClick={(e) => { e.stopPropagation(); toggleFavorite(id); }} style={{ marginTop: '4px', padding: '4px 8px', fontSize: '12px' }}>{favorites[id] ? '★' : '☆'}</button>}
                 </div>
               );
             })}
