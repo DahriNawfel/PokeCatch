@@ -1,7 +1,7 @@
 {
   "name": "PokeCatch",
   "short_name": "PokeCatch",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#1b1d23",
   "theme_color": "#3B82F6",
