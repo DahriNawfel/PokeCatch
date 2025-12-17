@@ -189,7 +189,7 @@ export default function App() {
                   <>
                     <img alt={current.name} src={current.image} width={220} height={220} style={{ imageRendering: 'pixelated', visibility: ballPhase ? 'hidden' : 'visible' }} />
                     {pokedex.find(p => p.id === current.id) && <img src="./assets/pokeball-sprite.png" alt="Captured" style={{ position: 'absolute', top: 0, right: 0, width: '48px', height: '48px', visibility: ballPhase ? 'hidden' : 'visible' }} />}
-                    {current.shiny && <img src="/assets/star.png" alt="Shiny" style={{ position: 'absolute', top: 0, left: 0, width: '48px', height: '48px', visibility: ballPhase ? 'hidden' : 'visible' }} />}
+                    {current.shiny && <img src="./assets/star.png" alt="Shiny" style={{ position: 'absolute', top: 0, left: 0, width: '48px', height: '48px', visibility: ballPhase ? 'hidden' : 'visible' }} />}
                   </>
                 )}
                 {ballPhase && (
